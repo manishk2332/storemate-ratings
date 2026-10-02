@@ -6,7 +6,8 @@ StoreMate is a full-stack store-rating platform built for the FullStack Intern C
 
 Open the deployed application here:
 
-**[Launch StoreMate Live Demo](https://storemate-t2ex8brw.manus.space)**       <img width="810" height="810" alt="image" src="https://github.com/user-attachments/assets/228a03e8-f26d-47b7-96cf-2bae791973f8" />
+**[Launch StoreMate Live Demo](https://storemate-t2ex8brw.manus.space)**       <img width="300" height="300" alt="image" src="https://github.com/user-attachments/assets/0e7adf0e-470b-4f03-b045-bb52b4356fb9" />
+
 
 
 ### How to test the demo
