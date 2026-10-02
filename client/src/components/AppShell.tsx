@@ -1,5 +1,6 @@
 import { Link, useLocation } from "wouter";
 import type { ReactNode } from "react";
+import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 
 type AppUser = { name: string; email: string; role: "user" | "admin" | "owner"; address: string };
@@ -8,6 +9,7 @@ const roleLabels = { admin: "System Administrator", user: "Normal User", owner: 
 
 export function AppShell({ user, children }: { user: AppUser; children: ReactNode }) {
   const [location, setLocation] = useLocation();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const utils = trpc.useUtils();
   const logout = trpc.auth.logout.useMutation({
     onSuccess: async () => {
@@ -40,6 +42,7 @@ export function AppShell({ user, children }: { user: AppUser; children: ReactNod
       <main className="main-panel">
         <header className="topbar">
           <div className="mobile-brand"><span className="brand-mark">S</span><strong>StoreMate</strong></div>
+          <button className="mobile-menu-trigger" onClick={() => setMobileMenuOpen(value => !value)} aria-label="Open workspace menu">{mobileMenuOpen ? "×" : "☰"}</button>
           <div className="topbar-spacer" />
           <Link href="/change-password" className="account-chip" title="Change password">
             <span className="avatar">{user.name.slice(0, 1).toUpperCase()}</span>
@@ -47,6 +50,7 @@ export function AppShell({ user, children }: { user: AppUser; children: ReactNod
             <span className="chevron">⌄</span>
           </Link>
         </header>
+        {mobileMenuOpen && <div className="mobile-menu"><div className="mobile-menu-label">Workspace</div>{links.map(link => <Link key={link.href} href={link.href} onClick={() => setMobileMenuOpen(false)} className={`mobile-menu-link ${location === link.href ? "active" : ""}`}><span>{link.icon}</span>{link.label}</Link>)}<Link href="/change-password" onClick={() => setMobileMenuOpen(false)} className="mobile-menu-link"><span>⌑</span>Change password</Link><button className="mobile-menu-link mobile-signout" onClick={() => logout.mutate()} disabled={logout.isPending}><span>↪</span>{logout.isPending ? "Signing out…" : "Sign out"}</button></div>}
         <section className="content-wrap">{children}</section>
       </main>
     </div>

@@ -3,7 +3,7 @@ import { z } from "zod";
 import { roleValues } from "../drizzle/schema";
 import * as db from "./db";
 import { hashPassword, publicUser, setApplicationSession, verifyPassword, clearApplicationSession } from "./auth";
-import { adminProcedure, ownerProcedure, protectedProcedure, publicProcedure, router } from "./_core/trpc";
+import { adminProcedure, ownerProcedure, protectedProcedure, publicProcedure, router, userProcedure } from "./_core/trpc";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { COOKIE_NAME } from "../shared/const";
 import { systemRouter } from "./_core/systemRouter";
@@ -79,11 +79,11 @@ export const appRouter = router({
   }),
 
   stores: router({
-    list: protectedProcedure.input(z.object({ search: z.string().optional(), sortDirection: sortDirectionSchema, ...paginationSchema.shape })).query(({ input, ctx }) => db.listStoresForUser(ctx.user.id, input)),
+    list: userProcedure.input(z.object({ search: z.string().optional(), sortDirection: sortDirectionSchema, ...paginationSchema.shape })).query(({ input, ctx }) => db.listStoresForUser(ctx.user.id, input)),
   }),
 
   ratings: router({
-    submit: protectedProcedure.input(z.object({ storeId: z.number().int().positive(), rating: z.number().int().min(1).max(5) })).mutation(({ input, ctx }) => db.upsertRating(input.storeId, ctx.user.id, input.rating)),
+    submit: userProcedure.input(z.object({ storeId: z.number().int().positive(), rating: z.number().int().min(1).max(5) })).mutation(({ input, ctx }) => db.upsertRating(input.storeId, ctx.user.id, input.rating)),
   }),
 
   owner: router({

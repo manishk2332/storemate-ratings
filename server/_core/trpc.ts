@@ -32,3 +32,12 @@ export const ownerProcedure = t.procedure.use(
     return opts.next({ ctx: { ...opts.ctx, user: opts.ctx.user } });
   })
 );
+
+export const userProcedure = t.procedure.use(
+  t.middleware(async opts => {
+    if (!opts.ctx.user || opts.ctx.user.role !== "user") {
+      throw new TRPCError({ code: "FORBIDDEN", message: "Normal user permission required" });
+    }
+    return opts.next({ ctx: { ...opts.ctx, user: opts.ctx.user } });
+  })
+);

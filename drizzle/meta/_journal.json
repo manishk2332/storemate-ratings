@@ -15,6 +15,13 @@
       "when": 1790914748051,
       "tag": "0001_yielding_champions",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1790915414799,
+      "tag": "0002_nosy_goliath",
+      "breakpoints": true
     }
   ]
 }

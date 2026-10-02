@@ -133,7 +133,7 @@ export async function listUsers(input: {
   }
   if (input.address?.trim()) clauses.push(like(users.address, `%${input.address.trim()}%`));
   if (input.role) clauses.push(eq(users.role, input.role));
-  if (!input.includeOwners) clauses.push(inArray(users.role, ["user", "admin"]));
+  if (!input.includeOwners) clauses.push(inArray(users.role, ["user", "admin", "owner"]));
   const where = clauses.length ? and(...clauses) : undefined;
   const offset = (input.page - 1) * input.pageSize;
   const orderColumn = userSortColumns[input.sortBy] ?? users.name;
@@ -200,6 +200,9 @@ export async function getStoreById(storeId: number) {
 
 export async function upsertRating(storeId: number, userId: number, rating: number) {
   const db = requireDb(await getDb());
+  const [store, user] = await Promise.all([getStoreById(storeId), getUserById(userId)]);
+  if (!store) throw new Error("Store not found");
+  if (!user || user.role !== "user") throw new Error("Only a normal user can submit a rating");
   await db.insert(ratings).values({ storeId, userId, rating }).onDuplicateKeyUpdate({ set: { rating, updatedAt: new Date() } });
   const result = await db.select().from(ratings).where(and(eq(ratings.storeId, storeId), eq(ratings.userId, userId))).limit(1);
   return result[0];
