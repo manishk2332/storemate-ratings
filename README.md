@@ -12,7 +12,7 @@ Open the deployed application here:
 
 1. Open the live demo link and sign in with one of the accounts below.
 2. Use the **Admin** account to review dashboard totals, stores, People, filters, sorting, and create forms.
-3. Sign out and use the **Normal User** account to browse/search stores, submit a rating from 1–5, and modify that rating.
+3. Sign out and use the **Normal User** account to browse/search stores, open **Scan store QR**, and submit or modify a rating from 1–5. The scanner accepts a QR payload containing a numeric store ID, such as `2`, `storemate://store/2`, or `?storeId=2`.
 4. Sign out and use the **Store Owner** account to view the store average rating and the users who submitted ratings.
 5. The application also includes signup and password-update flows from the login/account screens.
 
@@ -20,7 +20,7 @@ The demo uses a shared seeded database, so rating totals may change when evaluat
 
 ## Included assessment features
 
-The app includes one email/password login flow with role-based access for **System Administrator**, **Normal User**, and **Store Owner**. Normal users can sign up, browse and search stores, submit a 1–5 rating, and modify their submitted rating. Administrators can view dashboard totals, create users and stores, filter and sort listings, and inspect user details. Store owners can view their store’s average rating and the users who submitted ratings. All protected operations are authorized on the server.
+The app includes one email/password login flow with role-based access for **System Administrator**, **Normal User**, and **Store Owner**. Normal users can sign up, browse and search stores, scan a store QR code, submit a 1–5 rating, and modify their submitted rating. Administrators can view dashboard totals, create users and stores, filter and sort listings, and inspect user details. Store owners can view their store’s average rating and the users who submitted ratings. All protected operations are authorized on the server.
 
 The shared validation rules are implemented on the client and server: names are 20–60 characters, addresses are at most 400 characters, passwords are 8–16 characters with at least one uppercase and one special character, emails use standard validation, and ratings are integers from 1 to 5.
 
