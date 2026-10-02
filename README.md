@@ -2,6 +2,22 @@
 
 StoreMate is a full-stack store-rating platform built for the FullStack Intern Coding Challenge. It uses React, an Express-compatible tRPC backend, Drizzle ORM, and the managed MySQL-compatible database.
 
+## Live demo
+
+Open the deployed application here:
+
+**[Launch StoreMate Live Demo](https://8328-i8yvo5cu5nlrdrj9nz2vt-804d58b8.sg2.manus.computer/login)**
+
+### How to test the demo
+
+1. Open the live demo link and sign in with one of the accounts below.
+2. Use the **Admin** account to review dashboard totals, stores, People, filters, sorting, and create forms.
+3. Sign out and use the **Normal User** account to browse/search stores, submit a rating from 1–5, and modify that rating.
+4. Sign out and use the **Store Owner** account to view the store average rating and the users who submitted ratings.
+5. The application also includes signup and password-update flows from the login/account screens.
+
+The demo uses a shared seeded database, so rating totals may change when evaluators submit or modify ratings.
+
 ## Included assessment features
 
 The app includes one email/password login flow with role-based access for **System Administrator**, **Normal User**, and **Store Owner**. Normal users can sign up, browse and search stores, submit a 1–5 rating, and modify their submitted rating. Administrators can view dashboard totals, create users and stores, filter and sort listings, and inspect user details. Store owners can view their store’s average rating and the users who submitted ratings. All protected operations are authorized on the server.
