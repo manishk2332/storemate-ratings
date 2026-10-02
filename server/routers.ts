@@ -79,7 +79,7 @@ export const appRouter = router({
   }),
 
   stores: router({
-    list: userProcedure.input(z.object({ search: z.string().optional(), sortDirection: sortDirectionSchema, ...paginationSchema.shape })).query(({ input, ctx }) => db.listStoresForUser(ctx.user.id, input)),
+    list: userProcedure.input(z.object({ search: z.string().optional(), storeId: z.number().int().positive().optional(), sortDirection: sortDirectionSchema, ...paginationSchema.shape })).query(({ input, ctx }) => db.listStoresForUser(ctx.user.id, input)),
   }),
 
   ratings: router({

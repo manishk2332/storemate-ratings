@@ -144,6 +144,7 @@ export async function listUsers(input: {
 
 export async function listStores(input: {
   search?: string;
+  storeId?: number;
   page: number;
   pageSize: number;
   sortBy: keyof typeof storeSortColumns | "rating";
@@ -151,7 +152,10 @@ export async function listStores(input: {
 }) {
   const db = requireDb(await getDb());
   const search = input.search?.trim();
-  const where = search ? or(like(stores.name, `%${search}%`), like(stores.address, `%${search}%`), like(stores.email, `%${search}%`)) : undefined;
+  const clauses = [];
+  if (search) clauses.push(or(like(stores.name, `%${search}%`), like(stores.address, `%${search}%`), like(stores.email, `%${search}%`)));
+  if (input.storeId) clauses.push(eq(stores.id, input.storeId));
+  const where = clauses.length ? and(...clauses) : undefined;
   const averageRating = sql<number>`coalesce(avg(${ratings.rating}), 0)`;
   const base = db.select({
     id: stores.id,
@@ -168,7 +172,7 @@ export async function listStores(input: {
   return { rows, total: Number(totalRows[0]?.value ?? 0) };
 }
 
-export async function listStoresForUser(userId: number, input: { search?: string; page: number; pageSize: number; sortDirection: SortDirection }) {
+export async function listStoresForUser(userId: number, input: { search?: string; storeId?: number; page: number; pageSize: number; sortDirection: SortDirection }) {
   const result = await listStores({ ...input, sortBy: "name" });
   if (!result.rows.length) return { ...result, rows: [] as Array<(typeof result.rows)[number] & { userRating: number | null }> };
   const db = requireDb(await getDb());

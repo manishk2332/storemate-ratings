@@ -78,3 +78,20 @@ h2 { font-size: 22px; letter-spacing: -.03em; }
 
 @media (max-width: 900px) { .sidebar { width: 205px; flex-basis: 205px; }.topbar { padding: 0 24px; }.content-wrap { padding: 32px 24px 58px; }.auth-page { grid-template-columns: 1fr; }.auth-aside { display: none; }.auth-panel { max-width: 640px; padding: 38px 26px; }.auth-copy { margin-top: 65px; } }
 @media (max-width: 640px) { .app-frame { display: block; }.sidebar { display: none; }.topbar { height: 66px; padding: 0 16px; }.mobile-brand { display: inline-flex; }.mobile-menu-trigger { display: inline-grid; place-items: center; order: 2; margin-left: 13px; width: 34px; height: 34px; border-radius: 8px; background: var(--ink); color: #fff; font-size: 19px; cursor: pointer; }.topbar .topbar-spacer { order: 1; }.topbar .account-chip { order: 3; }.mobile-menu { display: grid; position: absolute; z-index: 20; right: 12px; top: 58px; width: min(285px, calc(100vw - 24px)); padding: 9px; border: 1px solid var(--line); border-radius: 12px; background: #fff; box-shadow: var(--shadow); }.mobile-menu-label { padding: 7px 10px 6px; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; font-size: 10px; font-weight: 850; }.mobile-menu-link { display: flex; align-items: center; gap: 10px; padding: 11px 10px; border-radius: 8px; color: var(--ink-soft); background: transparent; font-weight: 700; text-align: left; cursor: pointer; }.mobile-menu-link:hover, .mobile-menu-link.active { background: var(--amber-soft); color: var(--ink); }.mobile-signout { width: 100%; }.account-copy, .chevron { display: none; }.account-chip { padding-left: 0; }.content-wrap { padding: 28px 16px 50px; }.page-header { display: block; }.page-header h1 { margin-top: 8px; }.header-action { margin-top: 17px; }.header-action .primary-button, .header-action .secondary-button { width: 100%; }.stats-grid, .quick-grid { grid-template-columns: 1fr; }.stat-card { min-height: 125px; }.section-head { display: block; }.section-head .secondary-button { margin-top: 12px; }.form-grid, .detail-grid, .two-column-form { grid-template-columns: 1fr; }.form-span { grid-column: auto; }.data-table { min-width: 620px; }.pagination { gap: 14px; align-items: flex-start; flex-direction: column; }.auth-panel { padding: 28px 20px; }.auth-copy { margin: 55px 0 27px; }.auth-copy h1 { font-size: 40px; }.auth-footer { margin-top: 19px; } }
+
+.scan-selection { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin: -12px 0 18px; padding: 11px 14px; border: 1px solid #f0d58d; border-radius: 10px; background: var(--amber-soft); color: #75550b; font-size: 13px; }
+.qr-overlay { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 20px; background: rgba(23,32,46,.72); }
+.qr-modal { width: min(480px, 100%); padding: 22px; border-radius: 16px; background: #fff; box-shadow: 0 24px 70px rgba(0,0,0,.25); }
+.qr-modal-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 15px; }
+.qr-modal-head h2 { margin: 6px 0 0; }
+.qr-close { min-width: 40px; padding: 0; font-size: 22px; }
+.qr-reader { min-height: 290px; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: #111; }
+.qr-reader video { border-radius: 12px; }
+.qr-reader__dashboard { padding: 10px !important; }
+.qr-reader__dashboard_section { display: grid; gap: 8px; }
+.qr-reader__dashboard_section button { border: 1px solid var(--line); border-radius: 7px; padding: 7px 10px; background: #fff; cursor: pointer; }
+.qr-reader__dashboard_section select { min-height: 34px; border: 1px solid var(--line); border-radius: 7px; padding: 0 8px; }
+.qr-status { margin: 14px 0 4px; color: var(--ink-soft); font-weight: 700; }
+.qr-help { margin: 0; color: var(--muted); font-size: 11px; }
+.qr-help code { padding: 2px 4px; border-radius: 4px; background: var(--paper); }
+@media (max-width: 640px) { .scan-selection { align-items: flex-start; flex-direction: column; } .scan-selection .secondary-button { width: 100%; } .qr-overlay { padding: 12px; } .qr-modal { padding: 16px; } }
