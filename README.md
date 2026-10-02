@@ -1,14 +1,49 @@
 # StoreMate Ratings Platform
 
-React / Express / tRPC / Drizzle starter, adapted from the Sandbox web-db-user template.
+StoreMate is a full-stack store-rating platform built for the FullStack Intern Coding Challenge. It uses React, an Express-compatible tRPC backend, Drizzle ORM, and the managed MySQL-compatible database.
 
-- `pnpm dev`: development server; honors `PORT` (default 3000).
-- `pnpm build` / `pnpm start`: build and serve `dist/index.js` and `dist/public/`.
-- `pnpm db:migrate`: apply checked-in migrations. `pnpm db:push`: generate and apply new schema changes.
-- `pnpm check` / `pnpm test`: types and application tests.
+## Included assessment features
 
-Start with the Webdev skill's default-template guide. Platform login, storage, payments and service contracts live in its shared references; read the relevant capability before extending its helper.
+The app includes one email/password login flow with role-based access for **System Administrator**, **Normal User**, and **Store Owner**. Normal users can sign up, browse and search stores, submit a 1–5 rating, and modify their submitted rating. Administrators can view dashboard totals, create users and stores, filter and sort listings, and inspect user details. Store owners can view their store’s average rating and the users who submitted ratings. All protected operations are authorized on the server.
 
-`server/_core/publicConfig.ts` exposes only named public runtime values. Private keys stay server-side. The platform serves managed `/manus-storage/` assets; the application does not register a second proxy.
+The shared validation rules are implemented on the client and server: names are 20–60 characters, addresses are at most 400 characters, passwords are 8–16 characters with at least one uppercase and one special character, emails use standard validation, and ratings are integers from 1 to 5.
 
-Platform configuration is readable and editable through `webdev.config`. Default settings are initial values, not enforced constraints. The agent may modify the files, commands and configuration or follow the flexible guide for another stack.
+## Run locally in the managed project
+
+```bash
+pnpm install
+pnpm db:migrate
+pnpm db:seed
+pnpm dev
+```
+
+The development server listens on port `3000` by default. Useful checks are:
+
+```bash
+pnpm check
+pnpm test
+pnpm build
+```
+
+## Demo accounts
+
+Run `pnpm db:seed` first. These accounts are for development/demo evaluation only:
+
+| Role | Email | Password |
+| --- | --- | --- |
+| System Administrator | `admin@storemate.demo` | `Admin@123` |
+| Normal User | `user@storemate.demo` | `User@123` |
+| Store Owner | `owner@storemate.demo` | `Owner@123` |
+
+## Project map
+
+- `client/src/pages/`: login/signup, administrator, normal-user, owner, and password pages.
+- `client/src/components/AppShell.tsx`: navigation, layout, shared dashboard UI.
+- `server/routers.ts`: typed authentication, admin, stores, ratings, and owner procedures.
+- `server/db.ts`: Drizzle queries, filtering, sorting, pagination, aggregation, and rating upserts.
+- `server/auth.ts`: password hashing and signed application sessions.
+- `drizzle/schema.ts`: normalized users, stores, and ratings tables.
+- `drizzle/0001_yielding_champions.sql`: generated additive migration.
+- `server/seed.ts`: idempotent representative demo data.
+
+The application keeps the Preview-compatible `webdev_app_session` cookie and uses `SameSite=None; Secure` for the HTTPS embedded Preview context. The route manifest is available at `/manus-routes.json`.
