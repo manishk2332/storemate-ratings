@@ -99,6 +99,14 @@ const storeSortColumns = {
   createdAt: stores.createdAt,
 } as const;
 
+const ownerRatingSortColumns = {
+  name: users.name,
+  email: users.email,
+  address: users.address,
+  rating: ratings.rating,
+  submittedAt: ratings.updatedAt,
+} as const;
+
 type SortDirection = "asc" | "desc";
 
 export async function getDashboardCounts() {
@@ -133,7 +141,7 @@ export async function listUsers(input: {
   }
   if (input.address?.trim()) clauses.push(like(users.address, `%${input.address.trim()}%`));
   if (input.role) clauses.push(eq(users.role, input.role));
-  if (!input.includeOwners) clauses.push(inArray(users.role, ["user", "admin", "owner"]));
+  if (!input.includeOwners && input.role !== "owner") clauses.push(inArray(users.role, ["user", "admin"]));
   const where = clauses.length ? and(...clauses) : undefined;
   const offset = (input.page - 1) * input.pageSize;
   const orderColumn = userSortColumns[input.sortBy] ?? users.name;
@@ -172,8 +180,8 @@ export async function listStores(input: {
   return { rows, total: Number(totalRows[0]?.value ?? 0) };
 }
 
-export async function listStoresForUser(userId: number, input: { search?: string; storeId?: number; page: number; pageSize: number; sortDirection: SortDirection }) {
-  const result = await listStores({ ...input, sortBy: "name" });
+export async function listStoresForUser(userId: number, input: { search?: string; storeId?: number; page: number; pageSize: number; sortBy: "name" | "address" | "rating"; sortDirection: SortDirection }) {
+  const result = await listStores(input);
   if (!result.rows.length) return { ...result, rows: [] as Array<(typeof result.rows)[number] & { userRating: number | null }> };
   const db = requireDb(await getDb());
   const userRatings = await db.select({ storeId: ratings.storeId, rating: ratings.rating }).from(ratings).where(and(eq(ratings.userId, userId), inArray(ratings.storeId, result.rows.map(row => row.id))));
@@ -212,7 +220,7 @@ export async function upsertRating(storeId: number, userId: number, rating: numb
   return result[0];
 }
 
-export async function getOwnerDashboard(ownerId: number) {
+export async function getOwnerDashboard(ownerId: number, input: { sortBy: keyof typeof ownerRatingSortColumns; sortDirection: SortDirection }) {
   const db = requireDb(await getDb());
   const store = await getStoreByOwnerId(ownerId);
   if (!store) return { store: null, averageRating: 0, totalRatings: 0, submitters: [] };
@@ -225,7 +233,7 @@ export async function getOwnerDashboard(ownerId: number) {
       address: users.address,
       rating: ratings.rating,
       submittedAt: ratings.updatedAt,
-    }).from(ratings).innerJoin(users, eq(users.id, ratings.userId)).where(eq(ratings.storeId, store.id)).orderBy(desc(ratings.updatedAt)),
+    }).from(ratings).innerJoin(users, eq(users.id, ratings.userId)).where(eq(ratings.storeId, store.id)).orderBy(input.sortDirection === "desc" ? desc(ownerRatingSortColumns[input.sortBy]) : asc(ownerRatingSortColumns[input.sortBy])),
   ]);
   return {
     store,

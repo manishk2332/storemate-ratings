@@ -20,7 +20,7 @@ The demo uses a shared seeded database, so rating totals may change when evaluat
 
 ## Included assessment features
 
-The app includes one email/password login flow with role-based access for **System Administrator**, **Normal User**, and **Store Owner**. Normal users can sign up, browse and search stores, scan a store QR code, submit a 1–5 rating, and modify their submitted rating. Administrators can view dashboard totals, create users and stores, filter and sort listings, and inspect user details. Store owners can view their store’s average rating and the users who submitted ratings. All protected operations are authorized on the server.
+The app includes one email/password login flow with role-based access for **System Administrator**, **Normal User**, and **Store Owner**. Normal users can sign up, browse and search stores, scan a store QR code, sort stores by name/address/rating, submit a 1–5 rating, and modify their submitted rating. Administrators can view dashboard totals, create users and stores, filter and sort listings, and inspect user details. The Admin People table defaults to the assessment-required normal-user and administrator listing; Store Owner profiles are available through an explicit owner filter and include their store rating in detail view. Store owners can view their store’s average rating and sort rating submitters by name, email, address, rating, or submission date. All protected operations are authorized on the server.
 
 The shared validation rules are implemented on the client and server: names are 20–60 characters, addresses are at most 400 characters, passwords are 8–16 characters with at least one uppercase and one special character, emails use standard validation, and ratings are integers from 1 to 5.
 

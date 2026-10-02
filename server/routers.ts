@@ -79,7 +79,7 @@ export const appRouter = router({
   }),
 
   stores: router({
-    list: userProcedure.input(z.object({ search: z.string().optional(), storeId: z.number().int().positive().optional(), sortDirection: sortDirectionSchema, ...paginationSchema.shape })).query(({ input, ctx }) => db.listStoresForUser(ctx.user.id, input)),
+    list: userProcedure.input(z.object({ search: z.string().optional(), storeId: z.number().int().positive().optional(), sortBy: z.enum(["name", "address", "rating"]).default("name"), sortDirection: sortDirectionSchema, ...paginationSchema.shape })).query(({ input, ctx }) => db.listStoresForUser(ctx.user.id, input)),
   }),
 
   ratings: router({
@@ -87,7 +87,7 @@ export const appRouter = router({
   }),
 
   owner: router({
-    dashboard: ownerProcedure.query(({ ctx }) => db.getOwnerDashboard(ctx.user.id)),
+    dashboard: ownerProcedure.input(z.object({ sortBy: z.enum(["name", "email", "address", "rating", "submittedAt"]).default("submittedAt"), sortDirection: sortDirectionSchema }).optional()).query(({ input, ctx }) => db.getOwnerDashboard(ctx.user.id, input ?? { sortBy: "submittedAt", sortDirection: "desc" })),
   }),
 });
 
